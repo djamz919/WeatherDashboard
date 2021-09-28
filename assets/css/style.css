@@ -1,0 +1,107 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* HEADER STYLES START */
+header {
+    background-image: linear-gradient(to right, rgb(0, 94, 202), rgb(53, 2, 53));
+    padding: 15px 0;
+}
+
+h1 {
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 40px;
+    color: white;
+}
+/* HEADER STYLES END */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.horizontalFlex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.verticalFlex {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+#dashboard {
+    padding: 20px;
+}
+
+/*LEFT CONTAINER START*/
+#leftContainer {
+    width: 20%;
+}
+
+#cityInput {
+    font-family: sans-serif;
+    font-size: 32px;
+    font-weight: bolder;
+    margin-bottom: 7px;
+}
+
+input {
+    font-family: sans-serif;
+    font-size: 20px;
+    padding: 8px 8px;
+    margin: 7px 0;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+#search {
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(221, 221, 221);
+    padding: 8px 0;
+    background-color: rgb(92, 154, 206);
+    border: none;
+    border-radius: 5px;
+    margin-top: 7px;
+}
+
+#enterCity {
+    padding-bottom: 20px;
+    border-bottom: solid 2px;
+}
+
+#searchHistory {
+    margin-top: 20px;
+}
+/*LEFT CONTAINER END*/
+
+/*RIGHT CONTAINER START*/
+#rightContainer {
+    width: 80%;
+    padding-left: 20px;
+}
+
+.displayCity {
+    border: solid 1px;
+}
+
+.weatherDetails p {
+    font-size: 18px;
+    padding: 10px 5px;
+}
+
+.fiveDay {
+    margin-top: 20px;
+}
+
+h3 {
+    font-size: 22px;
+}
+/*RIGHT CONTAINER END*/

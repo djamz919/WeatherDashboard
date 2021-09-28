@@ -11,35 +11,39 @@
     <header>
         <h1>Weather Dashboard</h1>
     </header>
-    <section id="leftContainer">
-        <div class="verticalFlex">
-            <h2>Search for a city:</h2>
-            <form></form>
-            <button id="search"></button>
-        </div>
-        <div id="searchHistory" class="verticalFlex">
-        </div>
-    </section>
-    <section id="rightContainer">
-        <div class="displayCity">
-            <h2>
-                <span id="city"></span>
-                <span id="todayDate"></span>
-            </h2>
-            <div id="todayInfo" class="weatherDetails">
-                <p class="temp">Temp: <span></span></p>
-                <p class="wind">Wind: <span></span></p>
-                <p class="humidity">Humidity: <span></span></p>
-                <p class="uv">UV Index: <span></span></p>
+    <section id="dashboard" class="horizontalFlex">
+        <section id="leftContainer">
+            <div id="enterCity" class="verticalFlex">
+                <form class="verticalFlex">
+                    <label for="text" id="cityInput">Search for a City:</label>
+                    <input type="text" placeholder="New York" class="form-input">
+                    <button id="search">Search</button>
+                </form>
             </div>
-        </div>
-        <div class="fiveDay">
-            <h3>
-                5-Day Forecast:
-            </h3>
-        </div>
+            <div id="searchHistory" class="verticalFlex">
+            </div>
+        </section>
+        <section id="rightContainer">
+            <div class="displayCity">
+                <h2>
+                    <span id="city"></span>
+                    <span id="todayDate"></span>
+                </h2>
+                <div id="todayInfo" class="weatherDetails">
+                    <p class="temp">Temp: <span></span></p>
+                    <p class="wind">Wind: <span></span></p>
+                    <p class="humidity">Humidity: <span></span></p>
+                    <p class="uv">UV Index: <span></span></p>
+                </div>
+            </div>
+            <div class="fiveDay">
+                <h3>
+                    5-Day Forecast:
+                </h3>
+                <div id="cardContainer" class="horizontalFlex"></div>
+            </div>
+        </section>
     </section>
-
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
