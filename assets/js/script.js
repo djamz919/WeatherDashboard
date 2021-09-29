@@ -1,7 +1,7 @@
 function getWeather() {
     var searchCity = document.getElementById('input').value;
     console.log(searchCity);
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchCity + '&appid=083a782d600721f3ec95c9eb2392cf2f')
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchCity + '&appid=')
         .then(function (response) {
             return response.json();
         })
