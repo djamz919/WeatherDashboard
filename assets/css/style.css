@@ -95,6 +95,7 @@ input {
 .weatherDetails p {
     font-size: 18px;
     padding: 10px 5px;
+    margin: 0;
 }
 
 .fiveDay {
@@ -102,6 +103,42 @@ input {
 }
 
 h3 {
-    font-size: 22px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+#uv {
+    padding: 0 10px;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.green {
+    background-color: green;
+    color: white;
+}
+
+.yellow {
+    background-color: yellow;
+    color: black;
+}
+
+.red {
+    background-color: red;
+    color: white;
+}
+
+#cardContainer {
+    justify-content: space-between;
+}
+
+#weatherCard {
+    width: 17%;
+    background-color: rgb(40, 40, 70);
+    color: white;
+}
+
+#weatherCard h4, #weatherCard p {
+    padding-left: 5px;
 }
 /*RIGHT CONTAINER END*/
