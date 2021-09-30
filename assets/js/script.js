@@ -1,6 +1,7 @@
 var formSearchEl = document.querySelector('#formSearch');
 var citiesHistory = [];
 var citiesIndex = 0;
+var city = '';
 
 var updateUvColor = function (uvIndex, uvSpan) {
     if (uvIndex < 3) {
@@ -13,13 +14,22 @@ var updateUvColor = function (uvIndex, uvSpan) {
 }
 
 var displayWeatherToday = function (response) {
-    var todayIcon = document.getElementById('todayIcon')
+    var todayHeader = document.getElementById('todayHeader');
+    todayHeader.innerHTML = '<span id="city"></span><span id="todayDate"></span>'
+    var citySpan = document.getElementById('city');
+    citySpan.textContent = city;
+    var date = moment().format('l');
+    //console.log(date);
+    var todayDateSpan = document.getElementById('todayDate');
+    todayDateSpan.textContent = ' (' + date + ')';
+    var todayIcon = document.createElement('img');
     var tempSpan = document.getElementById('temp');
     var windSpan = document.getElementById('wind');
     var humiditySpan = document.getElementById('humidity');
     var uvSpan = document.getElementById('uv');
     //console.log(response);
-    todayIcon.src = 'http://openweathermap.org/img/wn/'+response.daily[0].weather[0].icon+'@2x.png'
+    todayIcon.src = 'http://openweathermap.org/img/wn/' + response.daily[0].weather[0].icon + '@2x.png'
+    todayHeader.appendChild(todayIcon)
     tempSpan.textContent = response.current.temp + " °F";
     windSpan.textContent = response.current.wind_speed + " MPH";
     humiditySpan.textContent = response.current.humidity + "%";
@@ -43,10 +53,10 @@ var displayFiveDays = function (oneCallResponse) {
         var windEl = document.createElement('p');
         var humidityEl = document.createElement('p');
         //console.log(oneCallResponse.daily[i+1].weather[0].icon)
-        iconEl.src = 'http://openweathermap.org/img/wn/'+oneCallResponse.daily[i+1].weather[0].icon+'@2x.png'
-        tempEl.textContent = 'Temp: ' + oneCallResponse.daily[i+1].temp.day + ' °F';
-        windEl.textContent = 'Wind: ' + oneCallResponse.daily[i+1].wind_speed + ' MPH';
-        humidityEl.textContent  = oneCallResponse.daily[i+1].humidity + '%';
+        iconEl.src = 'http://openweathermap.org/img/wn/' + oneCallResponse.daily[i + 1].weather[0].icon + '@2x.png'
+        tempEl.textContent = 'Temp: ' + oneCallResponse.daily[i + 1].temp.day + ' °F';
+        windEl.textContent = 'Wind: ' + oneCallResponse.daily[i + 1].wind_speed + ' MPH';
+        humidityEl.textContent = oneCallResponse.daily[i + 1].humidity + '%';
         weatherCard.appendChild(iconEl);
         weatherCard.appendChild(tempEl);
         weatherCard.appendChild(windEl);
@@ -67,21 +77,17 @@ var addToHistory = function (oneCallResponse) {
 }
 
 var getWeather = function (event) {
-    event.preventDefault();
     var searchCity = document.getElementById('input').value;
-    //console.log(searchCity);
+    city = searchCity;
+    event.preventDefault();
+    console.log(searchCity);
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchCity + '&appid=083a782d600721f3ec95c9eb2392cf2f')
         .then(function (response) {
+            console.log(searchCity);
             return response.json();
         })
         .then(function (response) {
             //console.log(response);
-            var citySpan = document.getElementById('city');
-            citySpan.textContent = searchCity;
-            var date = moment().format('l');
-            //console.log(date);
-            var todayDateSpan = document.getElementById('todayDate');
-            todayDateSpan.textContent = '(' + date + ')';
             var lat = response.coord.lat;
             var lon = response.coord.lon;
             //console.log(lat);

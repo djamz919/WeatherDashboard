@@ -141,4 +141,9 @@ h3 {
 #weatherCard h4, #weatherCard p {
     padding-left: 5px;
 }
+
+img {
+    width: 50px;
+    height: 50px;
+}
 /*RIGHT CONTAINER END*/
