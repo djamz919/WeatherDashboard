@@ -1,7 +1,14 @@
 var formSearchEl = document.querySelector('#formSearch');
+var city = '';
 var citiesHistory = [];
 var citiesIndex = 0;
-var city = '';
+
+var restoreSearchHistory = function (savedCities) {
+    for (var i = 0; i < savedCities.length; i++){
+        city = savedCities[i];
+        addToHistory();
+    }
+}
 
 var apiCalls = function (addHistory) {
     console.log("I'm in the apiCalls function");
@@ -25,7 +32,7 @@ var apiCalls = function (addHistory) {
             //console.log(oneCallResponse);
             displayWeatherToday(oneCallResponse);
             displayFiveDays(oneCallResponse);
-            if (addHistory){
+            if (addHistory) {
                 addToHistory(oneCallResponse);
             }
         });
@@ -109,12 +116,20 @@ var addToHistory = function () {
         citiesHistory.push(city);
         var searchHistoryEl = document.getElementById('searchHistory');
         var cityButtonEl = document.createElement('button');
-        cityButtonEl.className = 'cityHistoryButton'+citiesIndex;
+        cityButtonEl.className = 'cityHistoryButton' + citiesIndex;
         cityButtonEl.textContent = city;
         searchHistoryEl.appendChild(cityButtonEl);
     }
 
-    var cityHistoryButtonEl = document.querySelector('.cityHistoryButton'+citiesIndex);
+    localStorage.setItem("citiesHistory", JSON.stringify(citiesHistory));
+
+    var savedCities = localStorage.getItem("citiesHistory");
+    if (savedCities) {
+        savedCities = JSON.parse(savedCities);
+        console.log(savedCities);
+    }
+
+    var cityHistoryButtonEl = document.querySelector('.cityHistoryButton' + citiesIndex);
     cityHistoryButtonEl.addEventListener("click", redisplayWeather);
 
     citiesIndex++;
@@ -137,5 +152,11 @@ var redisplayWeather = function (event) {
     apiCalls(false);
 }
 
-
 formSearchEl.addEventListener("submit", getWeather);
+
+var savedCities = localStorage.getItem("citiesHistory");
+if (savedCities) {
+    savedCities = JSON.parse(savedCities);
+    console.log(savedCities);
+    restoreSearchHistory(savedCities);
+}
