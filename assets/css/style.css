@@ -121,6 +121,7 @@ input {
 
 #todayHeader {
     padding-left: 5px;
+    margin-bottom: 0;
 }
 
 #city, #todayDate {
