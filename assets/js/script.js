@@ -3,6 +3,34 @@ var citiesHistory = [];
 var citiesIndex = 0;
 var city = '';
 
+var apiCalls = function (addHistory) {
+    console.log("I'm in the apiCalls function");
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=083a782d600721f3ec95c9eb2392cf2f') //takes in the city name
+        .then(function (response) {
+            //console.log(searchCity);
+            return response.json();
+        })
+        .then(function (response) {
+            //console.log(response);
+            var lat = response.coord.lat; // get latitude
+            var lon = response.coord.lon; // get longitude
+            //console.log(lat);
+            //console.log(lon);
+            return fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=hourly&units=imperial&appid=083a782d600721f3ec95c9eb2392cf2f')
+        })
+        .then(function (oneCallResponse) {
+            return oneCallResponse.json();
+        })
+        .then(function (oneCallResponse) {
+            //console.log(oneCallResponse);
+            displayWeatherToday(oneCallResponse);
+            displayFiveDays(oneCallResponse);
+            if (addHistory){
+                addToHistory(oneCallResponse);
+            }
+        });
+}
+
 var updateUvColor = function (uvIndex, uvSpan) {
     if (uvIndex < 3) {
         uvSpan.className = "green";
@@ -15,7 +43,7 @@ var updateUvColor = function (uvIndex, uvSpan) {
 
 var displayWeatherToday = function (response) {
     var todayHeader = document.getElementById('todayHeader');
-    todayHeader.innerHTML = '<span id="city"></span><span id="todayDate"></span>'
+    todayHeader.innerHTML = '<span id="city"></span><span id="todayDate"></span>' //Reset the innerHTML for new requests
     var citySpan = document.getElementById('city');
     citySpan.textContent = city;
     var date = moment().format('l');
@@ -40,8 +68,8 @@ var displayWeatherToday = function (response) {
 
 var displayFiveDays = function (oneCallResponse) {
     var cardContainerEl = document.getElementById('cardContainer');
-    cardContainerEl.innerHTML = '';
-    for (var i = 0; i < 5; i++) {
+    cardContainerEl.innerHTML = ''; //reset the innerHTML
+    for (var i = 0; i < 5; i++) { // for loop to go through the 5 days 
         var weatherCard = document.createElement('div');
         weatherCard.id = 'weatherCard';
         cardContainerEl.appendChild(weatherCard);
@@ -64,45 +92,50 @@ var displayFiveDays = function (oneCallResponse) {
     }
 }
 
-var addToHistory = function (oneCallResponse) {
-    citiesHistory[citiesIndex] = oneCallResponse;
-    var searchHistoryEl = document.getElementById('searchHistory');
-    var cityButtonEl = document.createElement('button');
-    cityButtonEl.setAttribute("cities-index", citiesIndex);
-    var searchCity = document.getElementById('input').value;
-    cityButtonEl.textContent = searchCity;
-    searchHistoryEl.appendChild(cityButtonEl);
-    citiesIndex++;
+var addToHistory = function () {
+    var inHistory = false;
+    //console.log(citiesHistory);
+    //console.log('The length of the array is ' + citiesHistory.length);
+    for (var i = 0; i < citiesHistory.length; i++) {
+        //console.log('citiesHistory ' + citiesHistory[i]);
+        //console.log(city);
+        if (citiesHistory[i] === city) {
+            //console.log(citiesHistory[i]);
+            inHistory = true;
+        }
+    }
+    //console.log('is it in the history?: ' + inHistory);
+    if (inHistory === false) {
+        citiesHistory.push(city);
+        var searchHistoryEl = document.getElementById('searchHistory');
+        var cityButtonEl = document.createElement('button');
+        cityButtonEl.className = 'cityHistoryButton'+citiesIndex;
+        cityButtonEl.textContent = city;
+        searchHistoryEl.appendChild(cityButtonEl);
+    }
 
+    var cityHistoryButtonEl = document.querySelector('.cityHistoryButton'+citiesIndex);
+    cityHistoryButtonEl.addEventListener("click", redisplayWeather);
+
+    citiesIndex++;
 }
 
 var getWeather = function (event) {
     var searchCity = document.getElementById('input').value;
     city = searchCity;
-    event.preventDefault();
-    console.log(searchCity);
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + searchCity + '&appid=083a782d600721f3ec95c9eb2392cf2f')
-        .then(function (response) {
-            console.log(searchCity);
-            return response.json();
-        })
-        .then(function (response) {
-            //console.log(response);
-            var lat = response.coord.lat;
-            var lon = response.coord.lon;
-            //console.log(lat);
-            //console.log(lon);
-            return fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=hourly&units=imperial&appid=083a782d600721f3ec95c9eb2392cf2f')
-        })
-        .then(function (oneCallResponse) {
-            return oneCallResponse.json();
-        })
-        .then(function (oneCallResponse) {
-            console.log(oneCallResponse);
-            displayWeatherToday(oneCallResponse);
-            displayFiveDays(oneCallResponse);
-            addToHistory(oneCallResponse);
-        });
+    event.preventDefault(); //stop it from refreshing
+    apiCalls(true);
+    //console.log(searchCity);
 }
+
+var redisplayWeather = function (event) {
+    event.preventDefault(); //stop it from refreshing
+    var targetEl = event.target;
+    city = targetEl.textContent;
+    console.log("I'm in the redisplayWeather function");
+    console.log(city);
+    apiCalls(false);
+}
+
 
 formSearchEl.addEventListener("submit", getWeather);
