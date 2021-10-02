@@ -81,7 +81,7 @@ var displayFiveDays = function (oneCallResponse) {
         weatherCard.id = 'weatherCard';
         cardContainerEl.appendChild(weatherCard);
         var headerEl = document.createElement('h4');
-        headerEl.textContent = moment().add(i, 'days').format('l');
+        headerEl.textContent = moment().add(i+1, 'days').format('l');
         weatherCard.appendChild(headerEl);
         var iconEl = document.createElement('img');
         var tempEl = document.createElement('p');
